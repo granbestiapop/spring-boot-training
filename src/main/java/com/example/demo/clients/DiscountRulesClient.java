@@ -2,6 +2,8 @@ package com.example.demo.clients;
 
 import com.example.demo.dto.DiscountRules;
 import com.example.demo.strings.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -17,6 +19,8 @@ public class DiscountRulesClient {
 
     static private final String URL = "https://api.mercadolibre.com/sites/%s/discount_rules";
     static private final HttpEntity entity;
+
+    private static final Logger LOG = LoggerFactory.getLogger(DiscountRulesClient.class);
 
     static {
         HttpHeaders headers = new HttpHeaders();
@@ -34,6 +38,8 @@ public class DiscountRulesClient {
         }
 
         final String url = String.format(URL, siteId);
+        LOG.info(String.format("GET %s", url));
+
         return restTemplate.exchange(url, HttpMethod.GET, entity, new ParameterizedTypeReference<List<DiscountRules>>(){})
                 .getBody()
                 .stream()
